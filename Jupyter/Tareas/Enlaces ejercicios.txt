@@ -1,0 +1,6 @@
+Parte 2 - ejercicios Markdown
+	https://github.com/anagu89/ONLINE_DS_THEBRIDGE_ANAGU/blob/main/Jupyter/03_Ejercicios_Markdown_Ill.ipynb
+	https://github.com/anagu89/ONLINE_DS_THEBRIDGE_ANAGU/blob/main/Jupyter/04_Ejercicios_Markdown_II.ipynb
+
+Parte 6 - ejercicios POO
+	https://github.com/anagu89/ONLINE_DS_THEBRIDGE_ANAGU/blob/main/Jupyter/Parte_6_Ejercicio_POO_DS_01_02_02_N07.ipynb

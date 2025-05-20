@@ -1,2 +1,0 @@
-https://github.com/anagu89/ONLINE_DS_THEBRIDGE_ANAGU/blob/main/Jupyter/03_Ejercicios_Markdown_Ill.ipynb
-https://github.com/anagu89/ONLINE_DS_THEBRIDGE_ANAGU/blob/main/Jupyter/04_Ejercicios_Markdown_II.ipynb
