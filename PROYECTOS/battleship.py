@@ -411,4 +411,3 @@ while True:
     if not np.any(tablero_jugador == "O"):
         print(f"GAME OVER\n{jugador} se perdió en el Pacífico.")
         break
-
