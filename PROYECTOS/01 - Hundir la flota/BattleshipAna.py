@@ -145,15 +145,19 @@ salir = False
 while not salir:
     print("\n------------------------------------\n")
     print("Selecciona una opción:")
-    print("1 - Reglas del juego")
-    print("2 - Jugar")
-    print("3 - Chiste")
+    print("1 - Jugar")
+    print("2 - Reglas del juego")
+    print("3 - Chiste náutico")
     print("0 - Salir\n")
 
     try:
         menu = int(input("Selecciona una opción: "))
 
         if menu == 1:
+            print("\n¡Izad las velas mis valientes marineros!")
+            salir = True
+
+        elif menu == 2:
                 print("""
 ==============================================================================================
 REGLAS DEL JUEGO
@@ -178,10 +182,6 @@ REGLAS DEL JUEGO
     El juego termina cuando un jugador ha hundido todas las naves de la flota de su oponente.
 ==============================================================================================
                 """)
-            
-        elif menu == 2:
-            print("\n¡Izad las velas mis valientes marineros!")
-            salir = True
         
         elif menu == 3:
 
@@ -199,6 +199,7 @@ REGLAS DEL JUEGO
             # imprime un chiste aleatorio, pongo -1 porque los índices empiezan en 0
             # ya importé "random" al inicio de programa
             indice_chiste = random.randint(0, len(chiste) -1)  
+            print("\nCHISTE")
             print(chiste[indice_chiste])
         
         elif menu == 0:
