@@ -111,13 +111,16 @@ def disparar(tablero, coordenada):
     if tablero[coordenada] == "O":          # si aciero en un barco (O)
         tablero[coordenada] = "X"           # entonces lo hundo (X)
         print("\nTocado\n")
+        return True                         # me devuelve True si acierto, para volver a disparar
     
     elif tablero[coordenada] == "X":        # si ya está hundido (X)
         print("\nHundido\n")
+        return False
     
     else:
         tablero[coordenada] = "-"           # si disparo al agua (-): == "-"
         print("\nAgua\n")
+        return False
 
 
 
@@ -352,11 +355,13 @@ while True:
 
     if not np.any(tablero_jugador == "O"):          # veo si me quedan barcos para seguir jugando
         print(f"GAME OVER\n{jugador} se perdió en el Pacífico.")
-        break
+        input("Pulsa cualquier tecla para salir.")
+        break 
 
     if not np.any(tablero_contrincante == "O"):     # veo si al contrincante le quedan barcos para seguir jugando
         print(f"YOU WIN\n{contrincante} naufragó en una isla desierta.")
-        break
+        input("Pulsa cualquier tecla para salir.")
+        break 
 
     # si es el turno del jugador (turno = True)
     if turno:
@@ -379,18 +384,21 @@ while True:
             continue
 
         print(f"({fila},{columna})")
-        disparar(tablero_contrincante, (fila -1, columna -1))
-        turno = False       # fin del turno del jugador
+        acierto = disparar(tablero_contrincante, (fila -1, columna -1))
             
-        print(f"\nTablero de {contrincante}\n{tablero_contrincante}\n\n")       
-        break 
+        print(f"\nTablero de {contrincante}\n{tablero_contrincante}\n\n")
+
+        if not acierto:
+            turno = False  # fin del turno del jugador si ha fallado
+        break
 
     # veo otra vez si al contrincante le quedan barcos para seguir jugando
     # si no lo hago le estaría dando un turno más teniendo todos los barcos hundidos!!
 
     if not np.any(tablero_contrincante == "O"):          
         print(f"YOU WIN\n{contrincante} naufragó en una isla desierta.")
-        break  
+        input("Pulsa cualquier tecla para salir.")
+        break    
 
     # si es el turno del contrincante (turno = False)
     if not turno:
@@ -400,14 +408,17 @@ while True:
         columna = random.randint(1, tamano)
         
         print(f"({fila},{columna})")
-        disparar(tablero_jugador, (fila - 1, columna -1))
-        turno = True        # fin del turno del contrincante
+        acierto = disparar(tablero_jugador, (fila - 1, columna -1))
         
         print(f"\nTablero de {jugador}\n{tablero_jugador}\n\n")
+
+        if not acierto:
+            turno = True  # fin del turno del contrincante si ha fallado
     
     # veo otra vez si me quedan barcos para seguir jugando
     # si no lo hago tendría un turno más teniendo todos mis barcos hundidos!!
 
     if not np.any(tablero_jugador == "O"):
         print(f"GAME OVER\n{jugador} se perdió en el Pacífico.")
+        input("Pulsa cualquier tecla para salir.")
         break
