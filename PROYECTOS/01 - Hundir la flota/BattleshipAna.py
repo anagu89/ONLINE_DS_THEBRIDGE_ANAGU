@@ -61,14 +61,16 @@ def coloca_barco_plus(tablero, barco, mostrar_proceso):
 
 
 
-# PASO 4: funcion para colocar los barcos aleatoriamente
+# PASO 4: funcion para colocar los barcos
+
+# modo aleatorio
 
 def crea_barco_aleatorio(tablero,eslora = 4, num_intentos = 100, mostrar_proceso = True):
     num_max_filas = tablero.shape[0]
     num_max_columnas = tablero.shape[1]
 
     while True:
-        barco = []          # Construimos el hipotetico barco
+        barco = []          # construimos el supuesto barco
         pieza_original = (random.randint(0,num_max_filas - 1), random.randint(0, num_max_columnas - 1))
         if mostrar_proceso:
             print("Pieza original:", pieza_original)
@@ -81,7 +83,7 @@ def crea_barco_aleatorio(tablero,eslora = 4, num_intentos = 100, mostrar_proceso
         fila = pieza_original[0]
         columna = pieza_original[1]
         
-        for i in range(eslora -1):
+        for i in range(eslora - 1):
             if orientacion == "N":
                 fila -= 1
             elif orientacion  == "S":
@@ -100,6 +102,79 @@ def crea_barco_aleatorio(tablero,eslora = 4, num_intentos = 100, mostrar_proceso
         
         if mostrar_proceso:
             print("Tengo que intentar colocar otro barco.\n")
+
+# modo manual
+
+def crea_barco_manual(tablero, eslora=4, num_intentos=100):
+    num_max_filas = tablero.shape[0]
+    num_max_columnas = tablero.shape[1]
+
+    print(f"\nColoca el buque de {eslora}m de eslora.")
+
+    while True:
+                
+        try:
+            fila = input(f"Fila: ").strip()
+            columna = input(f"Columna: ").strip()
+
+            if not (fila.isdigit() and columna.isdigit()):      # compruebo que son números enteros
+                print("Solo se permiten números, marinero de agua dulce.\n")
+                continue
+
+            fila = int(fila)
+            columna = int(columna)
+
+            if not (0 <= fila < num_max_filas) or not (0 <= columna < num_max_columnas):    # ver que no me he salido
+                print(f"¡Te saliste del tablero rata de sentina!\n")
+                continue
+
+            pieza_original = (fila, columna)
+
+        except:
+            print(f"Sigue fallando y te tiramos al agua.\n")
+            continue
+
+        orientacion = input("¿En qué dirección irá el barco? (N/S/E/O): ").upper().strip()
+        
+        if orientacion not in ["N", "S", "E", "O"]:
+            print("¿Necesitas una brújula para colocarlos bribón?\n")
+            continue
+
+        barco = [pieza_original]
+        fila = pieza_original[0]
+        columna = pieza_original[1]
+
+        for i in range(eslora - 1):
+            if orientacion == "N":
+                fila -= 1
+            elif orientacion == "S":
+                fila += 1
+            elif orientacion == "E":
+                columna += 1
+            elif orientacion == "O":
+                columna -= 1
+
+            pieza = (fila, columna)
+            barco.append(pieza)       
+
+        fuera_rango = False      # compruebo si el barco está dentro del tablero
+        for fila, columna in barco:
+            if not (0 <= fila < num_max_filas) or not (0 <= columna < num_max_columnas):
+                fuera_rango = True
+                break
+
+        if fuera_rango:
+            print("La Tierra es plana y tu barco desborda. Intenta de nuevo.\n")
+            continue
+
+        tablero_temp = coloca_barco_plus(tablero, barco, mostrar_proceso = True)     # intento colocarlo
+        
+        if type(tablero_temp) == np.ndarray:
+            print("Barco colocado correctamente en la mar.\n")
+            print(tablero_temp)
+            return tablero_temp
+
+        print("Si pones el barco encima de otro hundes la nave.\n")
 
 
 
@@ -198,12 +273,13 @@ REGLAS DEL JUEGO
 
             # imprime un chiste aleatorio, pongo -1 porque los índices empiezan en 0
             # ya importé "random" al inicio de programa
-            indice_chiste = random.randint(0, len(chiste) -1)  
-            print("\nCHISTE")
+            indice_chiste = random.randint(0, len(chiste) -1)
+            print("\nCHISTE")  
             print(chiste[indice_chiste])
         
         elif menu == 0:
             print("¡Tierra a la vista! ¡Hasta pronto!")
+            input("Pulsa cualquier tecla para salir.")
             exit()          # ya importé la función exit al principio
             
         else:
@@ -246,14 +322,21 @@ print(f"¡Que empiece la ballata {jugador}!")
 tamano = 0
 
 while tamano < 8:
-    tamano = int(input("\nIntroduce los lados del tablero: "))
 
-    if tamano >= 8:
-        tablero = crea_tablero(tamano)
-        print(f"\n=== HUNDIR LA FLOTA ===\nTablero de juego: {tamano}x{tamano} \n")
-        
-    else:
-        print(f"Tablero demasiado pequeño. Crea con más de {tamano} casillas, por favor.\n¡Al menos 8!")
+    try:
+
+        tamano = int(input("\nIntroduce los lados del tablero: "))
+
+        if tamano >= 8:
+            tablero = crea_tablero(tamano)
+            print(f"\n=== HUNDIR LA FLOTA ===\nTablero de juego: {tamano}x{tamano} \n")
+            
+        else:
+            print(f"Tablero demasiado pequeño. Crea con más de {tamano} casillas, por favor.\n¡Al menos 8!")
+
+    except ValueError:
+        print("Por favor, introduce un número válido.")
+        continue
 
 tablero_jugador = tablero       # ambos tableros miden lo mismo
 tablero_contrincante = tablero
@@ -261,7 +344,7 @@ tablero_contrincante = tablero
 # selecciono si quiero ver el tablero del contrincante durante la partida
 while True:
     ver_tablero_contrincante = input(f"¿Quieres ver el tablero de {contrincante} durante la partida?")
-    ver_tablero_contrincante = ver_tablero_contrincante.lower()
+    ver_tablero_contrincante = ver_tablero_contrincante.lower().strip()  # .strip() para quitar los espacios
 
     if ver_tablero_contrincante == "si":
         print(f"Sí, necesito ayuda contra {contrincante}.\n")
@@ -276,24 +359,15 @@ while True:
     else:
         print(f"Por favor {jugador}, responde si o no.\n")
 
-
-print(f"\nTablero de {jugador}\n\n{tablero_jugador}\n\n")
 if ver_tablero_contrincante == True:
     print(f"\nTablero de {contrincante}\n\n{tablero_contrincante}\n\n")
+
+print(f"\nTablero de {jugador}\n\n{tablero_jugador}\n\n")
 
 
 
 # PASO 10: colocar los buques
-# coloco 6 barcos en total aleatoriamente
-print(f"\nColoquemos lo buques de {jugador}")
-print(f"_______________________________________\n")
-tablero_jugador = (crea_barco_aleatorio(tablero_jugador, eslora = 2, mostrar_proceso = True))   # 3 barcos de 2m eslora
-tablero_jugador = (crea_barco_aleatorio(tablero_jugador, eslora = 2, mostrar_proceso = True))
-tablero_jugador = (crea_barco_aleatorio(tablero_jugador, eslora = 2, mostrar_proceso = True))
-tablero_jugador = (crea_barco_aleatorio(tablero_jugador, eslora = 3, mostrar_proceso = True))   # 2 naves de 3m eslora
-tablero_jugador = (crea_barco_aleatorio(tablero_jugador, eslora = 3, mostrar_proceso = True))
-tablero_jugador = (crea_barco_aleatorio(tablero_jugador, eslora = 4, mostrar_proceso = True))   # 1 buque de 4m de eslora
-print(f"\nTablero de {jugador}\n\n{tablero_jugador}\n\n")
+# coloco 6 barcos para el contrincante aleatoriamente 
 
 print(f"\nColoquemos lo buques de {contrincante}")
 print(f"_______________________________________\n")
@@ -303,10 +377,43 @@ tablero_contrincante = (crea_barco_aleatorio(tablero_contrincante, eslora = 2, m
 tablero_contrincante = (crea_barco_aleatorio(tablero_contrincante, eslora = 3, mostrar_proceso = ver_tablero_contrincante))   # 2 naves de 3m eslora
 tablero_contrincante = (crea_barco_aleatorio(tablero_contrincante, eslora = 3, mostrar_proceso = ver_tablero_contrincante))
 tablero_contrincante = (crea_barco_aleatorio(tablero_contrincante, eslora = 4, mostrar_proceso = ver_tablero_contrincante))   # 1 buque de 4m de eslora
+
 if ver_tablero_contrincante == True:
     print(f"\nTablero de {contrincante}\n\n{tablero_contrincante}\n\n")
 else:
     print(f"\nTablero de {contrincante} preparado.")
+
+
+# coloco 6 barcos para el jugador de forma manual o aleatoria
+
+while True:
+    manual = input(f"¿Quieres colocar tus buques manualmente?")
+    manual = manual.lower().strip()
+    
+    if manual == "si":
+        print(f"Sí, colocaré mis buques manualmente.\n")
+        manual = True
+        break
+    
+    elif manual == "no":
+        print(f"No, estoy demasiado débil. Colócalos de forma aleatoria.\n")
+        manual = False
+        break
+    
+    else:
+        print(f"Escribe bien {jugador}, ¿o es que tienes aceite en las manos?\n")
+
+print(f"\nColoquemos lo buques de {jugador}")
+print(f"_______________________________________\n")
+
+for eslora in [2, 2, 2, 3, 3, 4]: # <--- para no tener que estar copia y pega todo el rato
+    
+    if manual:
+        tablero_jugador = crea_barco_manual(tablero_jugador, eslora = eslora)
+    else:
+        tablero_jugador = crea_barco_aleatorio(tablero_jugador, eslora = eslora, mostrar_proceso = True)
+
+print(f"\nTablero de {jugador}\n\n{tablero_jugador}\n\n")
 
 
 
