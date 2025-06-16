@@ -3,3 +3,15 @@ HUNDIR LA FLOTA
 - poner reparar barcos
 - poder salir del juego cuando queramos
 - hacer un case para elegir una de las opciones del menú, sería con una def / match /case x
+
+ALBERTO
+- poner 4 tableros: 2 y 2
+
+HUGO
+- hacer un repo para cada proyecto final, que no esté todo metido y haya que navegar entre carpetas
+- si pongo una carpeta general "PROYECTOS", le pongo un redmi de todos lo proyectos que tengo dentro enumerados. Y luego dentro de cada proyecto, tendrá su propio redmi explicando cómo va.
+Hacer un redmi:
+- qué librerías he usado
+- versión ce Python usada
+- próximas mejoras pendientes
+- cómo instalar el juego
