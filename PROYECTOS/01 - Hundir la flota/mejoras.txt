@@ -1,0 +1,5 @@
+HUNDIR LA FLOTA
+- usar librería time para que no vaya disparando tan rápido
+- poner reparar barcos
+- poder salir del juego cuando queramos
+- hacer un case para elegir una de las opciones del menú, sería con una def / match /case x
